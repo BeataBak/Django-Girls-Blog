@@ -10,7 +10,7 @@ def post_list(request):
         posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
         # return HttpResponseNotFound('<h1>No access for you!!!</h1>')
     else:
-        posts = Post.objects.all().order_by('-created_date')
+        posts = Post.objects.filter(author = request.user).order_by('-created_date')
 
     return render(request, 'blog/post_list.html', {'posts': posts})
 
