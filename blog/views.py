@@ -49,3 +49,12 @@ def post_edit(request, pk):
         else:
             form = PostForm(instance=post)
         return render(request, 'blog/post_edit.html', {'form': form})
+
+def post_publish(request, pk):
+    if not request.user.is_authenticated():
+        return HttpResponseNotFound('<h1>No access for you!!!</h1>')
+
+    else:
+        post = get_object_or_404(Post, pk=pk)
+        post.publish()
+        return redirect('blog.views.post_detail', pk=pk)
