@@ -6,11 +6,21 @@ from .forms import PostForm
 from django.conf import settings
 
 def post_list(request):
-    if not request.user.is_authenticated():
-        posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
+        #if not request.user.is_authenticated():
+    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
         # return HttpResponseNotFound('<h1>No access for you!!!</h1>')
-    else:
-        posts = Post.objects.filter(author = request.user).order_by('-created_date')
+        #else:
+            #posts = Post.objects.filter(author = request.user).order_by('-created_date')
+
+    return render(request, 'blog/post_list.html', {'posts': posts})
+
+def list_user_posts(request):
+    if not request.user.is_authenticated():
+        #posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
+        # return HttpResponseNotFound('<h1>No access for you!!!</h1>')
+        return redirect('home')
+
+    posts = Post.objects.filter(author = request.user).order_by('-created_date')
 
     return render(request, 'blog/post_list.html', {'posts': posts})
 
